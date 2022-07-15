@@ -17,7 +17,7 @@
         <div class="My_user">
           <div class="My_name">游客</div>
           <div class="My_edit">
-            <van-button type="primary">去登录</van-button>
+            <van-button type="primary" >去登录</van-button>
           </div>
         </div>
       </div>
@@ -35,16 +35,11 @@
     <div class="My_ad">
       <img src="http://liufusong.top:8080/img/profile/join.png" alt="" />
     </div>
-    <Foot></Foot>
   </div>
 </template>
 
 <script>
-import Foot from '@/views/Foot/index.vue'
 export default {
-  components: {
-    Foot
-  }
 }
 </script>
 
@@ -110,7 +105,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 0.346667rem;
-  color: #333;
+  /* color: #333; */
 }
 .My_list_icon:before {
   position: relative;

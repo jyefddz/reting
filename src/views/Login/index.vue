@@ -9,12 +9,12 @@
     >
     </van-nav-bar>
 
-    <van-form class="form" @submit="submitFn">
+    <van-form class="form">
       <van-field
         v-model="username"
         name="username"
         placeholder="请输入帐号"
-        :rules="[{ required: true, message: '请填写账号' }]"
+        :rules="usernameRules"
       >
       </van-field>
       <van-field
@@ -22,7 +22,7 @@
         type="password"
         name="密码"
         placeholder="请输入密码"
-        :rules="[{ required: true, message: '请填写密码' }]"
+        :rules="passwordRules"
       >
       </van-field>
 
@@ -42,14 +42,15 @@
 <script>
 // 引入api
 import { login } from '@/api/user'
-
+import { usernameRules, passwordRules } from './rules'
 // form表单域里 在任意的button点击都可以触发submit
 export default {
   data() {
     return {
       username: '',
       password: '',
-      user: ''
+      usernameRules,
+      passwordRules
     }
   },
   methods: {
@@ -57,26 +58,28 @@ export default {
     backTopPage() {
       this.$router.back()
     },
-    async submitFn() {
-      //   const user = this.user
-
-      const res = await login(this.username, this.password)
-      if (res.data.status === 200) {
+    // 登录
+    async login() {
+      this.$toast.loading({
+        message: '加载中..',
+        // loading时,点击页面没有反应
+        forbidClick: true
+      })
+      try {
+        const res = await login(this.username, this.password)
         this.$toast({
           message: '登录成功',
           icon: 'passed'
         })
-        this.$store.commit('setUser', res.data.body)
-      } else if (this.username.trim() === '' || this.password.trim() === '') {
-        this.$toast('用户名和密码不能为空')
-      } else if (res.data.status === 400) {
-        this.$toast(res.data.description)
+        console.log(res)
+        this.$router.push('/home/profile')
+      } catch (err) {
+        if (err.response.status === 400) {
+          this.$toast(err.response.data.message)
+        } else if (this.username.trim() === '' || this.password.trim() === '') {
+          this.$toast('用户名和密码不能为空')
+        }
       }
-    },
-    // 登录
-    async login() {
-      const res = await login(this.username, this.password)
-      console.log(res)
     }
   }
 }
