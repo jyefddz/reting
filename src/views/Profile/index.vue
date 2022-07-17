@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="My_title">
+    <!-- 登录 -->
+    <div v-if="isLogin" class="My_title">
       <img
         class="My_bg"
-        src="http://liufusong.top:8080/img/profile/bg.png"
-        alt="背景图"
+        src="http://liufusong.top:8080/img/avatar.png"
+        alt=""
       />
       <div class="My_info">
         <div class="My_myIcon">
@@ -15,21 +16,78 @@
           />
         </div>
         <div class="My_user">
-          <div class="My_name">游客</div>
+          <div class="My_name">{{userInfo.nickname}}</div>
+          <div class="My_auth">
+            <span @click="logOut">退出</span>
+          </div>
           <div class="My_edit">
-            <van-button type="primary" >去登录</van-button>
+            编辑个人资料
+            <span class="my_arrow">
+              <van-icon name="play" />
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <div class="My_list">
-      <van-grid :column-num="3" :border="false">
-        <van-grid-item class="house house-shoucang My_list_icon" text="我的收藏" />
-        <van-grid-item class="house house-home My_list_icon" text="我的出租" />
-        <van-grid-item class="house house-shizhong1 My_list_icon" text="看房记录" />
-        <van-grid-item class="house house-xinyongka My_list_icon" text="成为房猪" />
-        <van-grid-item class="house house-jurassic_user My_list_icon" text="个人资料" />
-        <van-grid-item class="house house-kefu My_list_icon" text="联系我们" />
+
+    <!-- 为登录 -->
+    <div v-else class="My_title">
+      <div>
+        <img
+          class="My_bg"
+          src="http://liufusong.top:8080/img/profile/bg.png"
+          alt="背景图"
+        />
+        <div class="My_info">
+          <div class="My_myIcon">
+            <img
+              class="My_avatar"
+              src="http://liufusong.top:8080/img/profile/avatar.png"
+              alt="icon"
+            />
+          </div>
+          <div class="My_user">
+            <div class="My_name">游客</div>
+            <div class="My_edit">
+              <van-button type="primary" @click="goLogin">去登录</van-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <van-grid :column-num="3" :border="false" clickable class="grid">
+        <van-grid-item text="我的收藏" @click="MyCollect">
+          <template #icon>
+            <span class="house house-shoucang"></span>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="我的出租">
+          <template #icon>
+            <span class="house house-home"></span>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="看房记录">
+          <template #icon>
+            <span class="house house-shizhong1"></span>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="成为房猪">
+          <template #icon>
+            <span class="house house-xinyongka"></span>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="个人资料">
+          <template #icon>
+            <span class="house house-jurassic_user"></span>
+          </template>
+        </van-grid-item>
+        <van-grid-item text="联系我们">
+          <template #icon>
+            <span class="house house-kefu"></span>
+          </template>
+        </van-grid-item>
       </van-grid>
     </div>
     <div class="My_ad">
@@ -39,11 +97,60 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/api'
 export default {
+  data() {
+    return {
+      userInfo: {}
+    }
+  },
+  computed: {
+    isLogin() {
+      return !!this.$store.state.user.token
+    }
+  },
+  created() {
+    this.getUserInfo()
+  },
+  methods: {
+    // 退出登录
+    logOut() {
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '是否确认退出?'
+        })
+        .then(() => {
+          // 点击确认
+          this.$store.commit('setUser', {})
+        })
+        .catch(() => {})
+    },
+    goLogin() {
+      this.$router.push('/login')
+    },
+    async getUserInfo() {
+      if (this.isLogin) {
+        // 如果用户登录,拿到用户信息
+        try {
+          const {
+            data: { body }
+          } = await getUserInfo()
+          this.userInfo = body
+          // console.log(body)
+        } catch (err) {
+          this.$toast.fail('请重新登录')
+        }
+      }
+    },
+    MyCollect() {
+      this.$router.push('/favorate')
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped lang="less">
 .My_title {
   min-height: 8rem;
   position: relative;
@@ -65,6 +172,28 @@ export default {
   padding: 0 0.5333rem;
   text-align: center;
   font-size: 0.34667rem;
+  .My_auth {
+    display: block;
+    span {
+      border-radius: 60px;
+      color: #fff;
+      padding: 4px 30px;
+      background: #21b97a;
+      font-size: 24px;
+    }
+  }
+  .My_edit {
+    color: #999;
+    font-size: 24px;
+    margin-top: 40px;
+    .My_arrow {
+      margin-left: 6px;
+      .icon-arrow {
+        font-size: 12px;
+        vertical-align: middle;
+      }
+    }
+  }
 }
 .My_myIcon {
   position: relative;
@@ -99,26 +228,16 @@ export default {
 .My_list {
   height: 5.06667rem;
 }
-.house {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.346667rem;
-  /* color: #333; */
-}
-.My_list_icon:before {
-  position: relative;
-  top: 0.6rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 0.5333rem;
-  align-items: center;
-}
-.van-grid-item__text {
-  font-size: 0.346667rem;
+.grid {
   color: #333;
+  .van-grid-item__text {
+    font-size: 0.346667rem;
+  }
+  .house {
+    display: block;
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
 }
 .My_ad {
   text-align: center;

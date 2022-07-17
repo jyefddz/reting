@@ -62,22 +62,24 @@ export default {
     async login() {
       this.$toast.loading({
         message: '加载中..',
-        // loading时,点击页面没有反应
+        // loading
         forbidClick: true
       })
       try {
         const res = await login(this.username, this.password)
+        this.$store.commit('setUser', res.data.body)
+        console.log(res)
         this.$toast({
           message: '登录成功',
           icon: 'passed'
         })
-        console.log(res)
+        // console.log(res)
         this.$router.push('/home/profile')
       } catch (err) {
-        if (err.response.status === 400) {
-          this.$toast(err.response.data.message)
-        } else if (this.username.trim() === '' || this.password.trim() === '') {
+        if (this.username.trim() === '' || this.password.trim() === '') {
           this.$toast('用户名和密码不能为空')
+        } else {
+          this.$toast(err.message)
         }
       }
     }

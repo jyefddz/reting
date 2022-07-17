@@ -1,19 +1,26 @@
-export const getItem = (name) => {
-  const data = window.localStorage.getItem(name)
-  try {
-    return JSON.parse(data)
-  } catch (err) {
-    return data
+// 封装本地存储
+class Storage {
+  // localStorage.setItem
+  set(key, value) {
+    if (typeof value === 'object') {
+      value = JSON.stringify(value)
+    }
+    localStorage.setItem(key, value)
+  }
+
+  // localStorage.getItem
+  get(key) {
+    const value = localStorage.getItem(key)
+    try {
+      return JSON.parse(value)
+    } catch {
+      return value
+    }
+  }
+
+  remove(key) {
+    localStorage.removeItem(key)
   }
 }
-
-export const setItem = (name, value) => {
-  if (typeof value === 'object') {
-    value = JSON.stringify(value)
-  }
-  window.localStorage.setItem(name, value)
-}
-
-export const removeItem = (name) => {
-  window.localStorage.removeItem(name)
-}
+const storage = new Storage()
+export default storage

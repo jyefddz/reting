@@ -10,3 +10,25 @@ export const login = (username, password) => {
     }
   })
 }
+
+// 用户信息
+export const getUserInfo = () => {
+  return request({
+    url: '/user',
+    method: 'GET'
+  })
+}
+
+// 查看收藏
+export const getUserCollect = () => {
+  return request({
+    url: '/user/favorites'
+  })
+}
+
+// 房屋是否收藏
+export const isCollect = (id) => {
+  return request({
+    url: `user/favorites/${id}`
+  })
+}
