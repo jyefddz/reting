@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/ ',
     redirect: () => import('@/views/Home')
   },
   {
@@ -19,6 +19,10 @@ const routes = [
   {
     path: '/detail',
     component: () => import('@/views/Detail')
+  },
+  {
+    path: '/rent',
+    component: () => import('@/views/Rent')
   },
   {
     path: '/',

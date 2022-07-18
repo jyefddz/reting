@@ -26,9 +26,16 @@ export const getUserCollect = () => {
   })
 }
 
-// 房屋是否收藏
-export const isCollect = (id) => {
+// 查看出租
+export const getUserRent = () => {
   return request({
-    url: `user/favorites/${id}`
+    url: '/user/houses'
+  })
+}
+
+// 房屋信息
+export const getHouse = (id) => {
+  return request({
+    url: `/houses/${id}`
   })
 }

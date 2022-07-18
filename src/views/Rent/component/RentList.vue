@@ -1,0 +1,63 @@
+<template>
+  <div>
+    <van-cell>
+      <van-card
+        class="favorate-list"
+        :desc="rentInfo.desc"
+        :title="rentInfo.title"
+        :thumb="`http://liufusong.top:8080${rentInfo.houseImg}`"
+      >
+        <template #price>
+          <div class="favorate_price">
+            <span>{{ rentInfo.price }}</span>
+            元/月
+          </div>
+        </template>
+        <template #tags>
+          <van-tag color="#e1f5f8" text-color="#39becd">{{
+            rentInfo.tags[0]
+          }}</van-tag>
+        </template>
+      </van-card>
+    </van-cell>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    rentInfo: {
+      type: Object,
+      require: true
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+.favorate-list {
+  background-color: #fff;
+  width: 10rem;
+  padding: 18px 0;
+  border-bottom: 2px solid #eee;
+  .van-card__thumb img {
+    border-radius: 0;
+  }
+  .van-card__title {
+    margin: 0;
+    font-size: 30px;
+    color: #394043;
+  }
+  .van-card__desc {
+    font-size: 24px;
+    color: #afb2b3;
+  }
+  :deep(.favorate_price) {
+    font-size: 24px;
+    color: #fa5741;
+    :deep(span) {
+      font-size: 38px;
+    }
+  }
+}
+</style>

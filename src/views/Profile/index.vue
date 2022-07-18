@@ -11,12 +11,12 @@
         <div class="My_myIcon">
           <img
             class="My_avatar"
-            src="http://liufusong.top:8080/img/profile/avatar.png"
+            :src="`http://liufusong.top:8080${userInfo.avatar}`"
             alt="icon"
           />
         </div>
         <div class="My_user">
-          <div class="My_name">{{userInfo.nickname}}</div>
+          <div class="My_name">{{ userInfo.nickname }}</div>
           <div class="My_auth">
             <span @click="logOut">退出</span>
           </div>
@@ -63,7 +63,7 @@
             <span class="house house-shoucang"></span>
           </template>
         </van-grid-item>
-        <van-grid-item text="我的出租">
+        <van-grid-item text="我的出租" @click="MyRent">
           <template #icon>
             <span class="house house-home"></span>
           </template>
@@ -137,7 +137,7 @@ export default {
             data: { body }
           } = await getUserInfo()
           this.userInfo = body
-          // console.log(body)
+          console.log(body)
         } catch (err) {
           this.$toast.fail('请重新登录')
         }
@@ -145,6 +145,9 @@ export default {
     },
     MyCollect() {
       this.$router.push('/favorate')
+    },
+    MyRent() {
+      this.$router.push('/rent')
     }
   }
 }
