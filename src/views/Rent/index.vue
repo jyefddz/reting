@@ -5,14 +5,14 @@
         title="我的出租"
         class="favorate_navbar"
         left-arrow
-        @click-left="ReturnMy"
+        @click-left="backTopPage"
       />
     </div>
     <van-list>
       <RentList
         v-for="item in MyRent"
         :key="item.houseCode"
-        :MyRent="item"
+        :rentInfo="item"
       ></RentList>
     </van-list>
   </div>
@@ -27,14 +27,12 @@ export default {
   },
   data() {
     return {
-      MyRent: {},
-      loading: false,
-      finished: false
+      MyRent: {}
     }
   },
   methods: {
-    ReturnMy() {
-      this.$router.push('/home/profile')
+    backTopPage() {
+      this.$router.back()
     },
     async getUserRent() {
       const {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-cell>
+    <van-cell @click="seeCollect(rentInfo.houseCode)">
       <van-card
         class="favorate-list"
         :desc="rentInfo.desc"
@@ -29,6 +29,16 @@ export default {
     rentInfo: {
       type: Object,
       require: true
+    }
+  },
+  methods: {
+    seeCollect(id) {
+      console.log(id)
+      localStorage.setItem('houseCode', id)
+      this.$router.push({
+        path: '/detail',
+        query: { id }
+      })
     }
   }
 }

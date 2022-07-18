@@ -134,7 +134,7 @@ export default {
   },
   methods: {
     ReturnCollect() {
-      this.$router.push('/favorate')
+      this.$router.back()
     },
     async getHouse() {
       try {

@@ -5,7 +5,7 @@
         title="收藏列表"
         class="favorate_navbar"
         left-arrow
-        @click-left="ReturnMy"
+        @click-left="backTopPage"
       />
     </div>
     <!-- <div>
@@ -61,8 +61,8 @@ export default {
     }
   },
   methods: {
-    ReturnMy() {
-      this.$router.push('/home/profile')
+    backTopPage() {
+      this.$router.back()
     },
     async getUserCollect() {
       const {
